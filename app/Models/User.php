@@ -3,7 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -18,9 +21,10 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
+        'username',
         'password',
+        'email',
+        'role_id',
     ];
 
     /**
@@ -44,5 +48,20 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function roles(): BelongsTo
+    {
+        return $this->belongsTo(Role::class, 'role_id', 'id');
+    }
+
+    public function user_detail()
+    {
+        return $this->hasOne(UserDetail::class);
+    }
+
+    public function getUpdatedAtAttribute($value)
+    {
+        return DateHelper::formatTanggalIndonesia($value);
     }
 }
