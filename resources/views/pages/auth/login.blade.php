@@ -5,7 +5,45 @@
     </h1>
 
     <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+    {{-- <x-auth-session-status class="mb-4" :status="session('status')" /> --}}
+
+    @if ($errors->any())
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <strong class="font-bold">Data is invalid: </strong>
+            <span class="block sm:inline">
+                <ul class="mt-1 ml-4 list-disc">
+                    @foreach ($errors->all() as $item)
+                        <li>{{ $item }}</li>
+                    @endforeach
+                </ul>
+            </span>
+            <button type="button" class="absolute top-0 bottom-0 right-0 px-4 py-3" aria-label="Close"
+                onclick="this.parentElement.remove();">
+                <svg class="fill-current h-6 w-6 text-red-700" role="button" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20">
+                    <title>Close</title>
+                    <path
+                        d="M14.348 14.849a1 1 0 001.415-1.415L11.415 10l4.348-4.348a1 1 0 10-1.415-1.415L10 8.585 5.652 4.237a1 1 0 10-1.415 1.415L8.585 10l-4.348 4.348a1 1 0 001.415 1.415L10 11.415l4.348 4.348z" />
+                </svg>
+            </button>
+        </div>
+    @endif
+
+    @if (Session::get('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <strong class="font-bold">{{ Session::get('success') }}</strong>
+            <button type="button" class="absolute top-0 bottom-0 right-0 px-4 py-3" aria-label="Close"
+                onclick="this.parentElement.remove();">
+                <svg class="fill-current h-6 w-6 text-green-700" role="button" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20">
+                    <title>Close</title>
+                    <path
+                        d="M14.348 14.849a1 1 0 001.415-1.415L11.415 10l4.348-4.348a1 1 0 10-1.415-1.415L10 8.585 5.652 4.237a1 1 0 10-1.415 1.415L8.585 10l-4.348 4.348a1 1 0 001.415 1.415L10 11.415l4.348 4.348z" />
+                </svg>
+            </button>
+        </div>
+    @endif
+
 
     {{-- Form --}}
     <form method="POST" action="{{ route('sign-in-process') }}">
