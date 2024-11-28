@@ -44,7 +44,6 @@
         </div>
     @endif
 
-
     {{-- Form --}}
     <form method="POST" action="{{ route('sign-in-process') }}">
         @csrf

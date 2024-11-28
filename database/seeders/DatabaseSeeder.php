@@ -40,6 +40,44 @@ class DatabaseSeeder extends Seeder
         }
 
 
+        //? MENUS
+        DB::table('menus')->insert([
+            'id' => 1,
+            'menu_name' => 'Followup',
+            'menu_desc' => 'User can acces crud menu followup',
+        ]);
+
+        DB::table('menus')->insert([
+            'id' => 2,
+            'menu_name' => 'Cutting',
+            'menu_desc' => 'User can acces crud menu cutting',
+        ]);
+
+        DB::table('menus')->insert([
+            'id' => 3,
+            'menu_name' => 'Embro',
+            'menu_desc' => 'User can acces crud menu embro',
+        ]);
+
+        DB::table('menus')->insert([
+            'id' => 4,
+            'menu_name' => 'Sewing',
+            'menu_desc' => 'User can access crud menu sewing',
+        ]);
+
+        DB::table('menus')->insert([
+            'id' => 5,
+            'menu_name' => 'Delivery',
+            'menu_desc' => 'User can access crud menu delivery',
+        ]);
+
+        DB::table('menus')->insert([
+            'id' => 6,
+            'menu_name' => 'Payment',
+            'menu_desc' => 'User can acces crud menu payment',
+        ]);
+
+
         //? USERS
         $user1 = User::factory()->create([
             'username' => 'gustigiyus',
