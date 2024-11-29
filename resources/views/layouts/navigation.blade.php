@@ -99,7 +99,7 @@
                             d="M18 5.05h1a2 2 0 0 1 2 2v2H3v-2a2 2 0 0 1 2-2h1v-1a1 1 0 1 1 2 0v1h3v-1a1 1 0 1 1 2 0v1h3v-1a1 1 0 1 1 2 0v1Zm-15 6v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-8H3ZM11 18a1 1 0 1 0 2 0v-1h1a1 1 0 1 0 0-2h-1v-1a1 1 0 1 0-2 0v1h-1a1 1 0 1 0 0 2h1v1Z"
                             clip-rule="evenodd" />
                     </svg>
-                    <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Master Data</span>
+                    <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Utilities</span>
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 10 6">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -108,15 +108,27 @@
                 </button>
                 <ul id="menu-dropdown-example" class="hidden py-2 space-y-2">
                     <li>
-                        <a href="#"
+                        <a href="{{ route('rolesIndex') }}"
                             class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                            Office
+                            Roles
                         </a>
                     </li>
                     <li>
                         <a href="#"
                             class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                            Department
+                            Brands
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                            Menus
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                            Users
                         </a>
                     </li>
                 </ul>

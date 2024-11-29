@@ -1,3 +1,44 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.dt-empty {
+  text-align: center;
+  padding: 1rem;
+  font-weight: 600;
+  color: #748297; /* Tailwind's gray-600 */
+  font-size: 1rem; /* Tailwind's gray-50 */
+}
+
+/* Label Error, Success & Massage Errors */
+.label-error {
+  @apply text-red-700 dark:text-red-500;
+}
+
+.label-success {
+  @apply text-green-700 dark:text-green-500;
+}
+
+.label-normal {
+  @apply text-gray-900 dark:text-white;
+}
+
+.input-error {
+  @apply bg-red-50 border border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500;
+}
+
+.input-success {
+  @apply bg-green-50 border border-green-500 text-green-900 dark:text-green-400 placeholder-green-700 dark:placeholder-green-500 focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:border-green-500;
+}
+
+.input-normal {
+  @apply bg-gray-50 border border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-600 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500;
+}
+
+.message-error {
+  @apply text-red-600 dark:text-red-500;
+}
+
+.message-success {
+  @apply text-green-600 dark:text-green-500;
+}

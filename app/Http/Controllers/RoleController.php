@@ -17,7 +17,7 @@ class RoleController extends Controller
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('Action', function ($data) {
-                return view('utility.roles.button', ['data' => $data]);
+                return view('pages.utility.roles.button', ['data' => $data]);
             })
             ->make(true);
     }
@@ -29,7 +29,7 @@ class RoleController extends Controller
             'pageTitle' => 'Roles Management',
         ];
 
-        return view('utility.roles.index', $datas);
+        return view('pages.utility.roles.index', $datas);
     }
 
 
@@ -98,19 +98,19 @@ class RoleController extends Controller
         try {
             Role::destroy($request->id);
             DB::commit();
-            ToastrHelper::successMessage("Data role berhasil dihapus");
+            ToastrHelper::successMessage("Role successfully deleted");
             return redirect()->back();
         } catch (\Throwable $th) {
             $errorCode = $th->errorInfo[1];
             if ($errorCode == 1451) {
                 // Kesalahan terkait dengan foreign key constraint violation, beri pesan kesalahan yang sesuai
                 DB::rollBack();
-                ToastrHelper::errorMessage("Tidak dapat menghapus role karena masih ada pengguna yang terkait dengan role ini.");
+                ToastrHelper::errorMessage("Cannot delete role because there are still users associated with this role.");
                 return redirect()->back();
             } else {
                 // Kesalahan lain, beri pesan kesalahan umum
                 DB::rollBack();
-                ToastrHelper::errorMessage("Terjadi kesalahan saat menghapus role. Silakan coba lagi.");
+                ToastrHelper::errorMessage("An error occurred while deleting the role. Please try again.");
                 return redirect()->back();
             }
         }
