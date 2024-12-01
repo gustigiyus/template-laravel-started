@@ -22,7 +22,7 @@ class UsersController extends Controller
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('Action', function ($data) {
-                return view('utility.users.button', ['data' => $data]);
+                return view('pages.utility.users.button', ['data' => $data]);
             })
             ->make(true);
     }
@@ -36,7 +36,7 @@ class UsersController extends Controller
             'roles' => Role::all(),
         ];
 
-        return view('utility.users.index', $datas);
+        return view('pages.utility.users.index', $datas);
     }
 
     public function create()
@@ -50,7 +50,7 @@ class UsersController extends Controller
             'brands' => Brand::all(),
         ];
 
-        return view('utility.users.create', $datas);
+        return view('pages.utility.users.create', $datas);
     }
 
     public function edit($userId)
