@@ -18,7 +18,7 @@ class MenuController extends Controller
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('Action', function ($data) {
-                return view('utility.menus.button', ['data' => $data]);
+                return view('pages.utility.menus.button', ['data' => $data]);
             })
             ->make(true);
     }
@@ -30,7 +30,7 @@ class MenuController extends Controller
             'pageTitle' => 'Menus Management',
         ];
 
-        return view('utility.menus.index', $datas);
+        return view('pages.utility.menus.index', $datas);
     }
 
     public function store(Request $request)
