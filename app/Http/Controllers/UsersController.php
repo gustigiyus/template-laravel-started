@@ -43,7 +43,7 @@ class UsersController extends Controller
     {
         $datas = [
             'headerTitle' => 'Users',
-            'pageTitle' => 'Created users',
+            'pageTitle' => 'Created user',
             'users' => User::with('roles', 'user_detail')->get(),
             'roles' => Role::all(),
             'menus' => Menu::all(),
