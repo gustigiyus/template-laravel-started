@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\RoleController;
@@ -25,7 +26,15 @@ Route::post('utility/roles/update/{id}', [RoleController::class, 'update'])->nam
 Route::post('utility/roles/store', [RoleController::class, 'store'])->name('roleStore')->middleware('checkRole:1');
 Route::post('utility/roles/delete', [RoleController::class, 'destroy'])->name('roleDelete')->middleware('checkRole:1');
 
-//* MENU
+//* BRANDS
+Route::get('utility/brands/ajaxdataTables', [BrandController::class, 'ajaxdataTables'])->name('brandList')->middleware('checkRole:1');
+Route::get('utility/brands', [BrandController::class, 'index'])->name('brandIndex')->middleware('checkRole:1');
+Route::get('utility/brands/show/{id}', [BrandController::class, 'show'])->name('brandShow')->middleware('checkRole:1');
+Route::post('utility/brands/update/{id}', [BrandController::class, 'update'])->name('brandUpdate')->middleware('checkRole:1');
+Route::post('utility/brands/store', [BrandController::class, 'store'])->name('brandStore')->middleware('checkRole:1');
+Route::post('utility/brands/delete', [BrandController::class, 'destroy'])->name('brandDelete')->middleware('checkRole:1');
+
+//* MENUS
 Route::get('utility/menus/ajaxdataTables', [MenuController::class, 'ajaxdataTables'])->name('menuList')->middleware('checkRole:1');
 Route::get('utility/menus', [MenuController::class, 'index'])->name('menuIndex')->middleware('checkRole:1');
 Route::get('utility/menus/show/{id}', [MenuController::class, 'show'])->name('menuShow')->middleware('checkRole:1');

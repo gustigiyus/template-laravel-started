@@ -17,7 +17,7 @@ class BrandController extends Controller
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('Action', function ($data) {
-                return view('utility.brands.button', ['data' => $data]);
+                return view('pages.utility.brands.button', ['data' => $data]);
             })
             ->make(true);
     }
@@ -29,7 +29,7 @@ class BrandController extends Controller
             'pageTitle' => 'Brands Management',
         ];
 
-        return view('utility.brands.index', $datas);
+        return view('pages.utility.brands.index', $datas);
     }
 
 
@@ -98,19 +98,19 @@ class BrandController extends Controller
         try {
             Brand::destroy($request->id);
             DB::commit();
-            ToastrHelper::successMessage("Data brand berhasil dihapus");
+            ToastrHelper::successMessage("Brand successfully deleted");
             return redirect()->back();
         } catch (\Throwable $th) {
             $errorCode = $th->errorInfo[1];
             if ($errorCode == 1451) {
                 // Kesalahan terkait dengan foreign key constraint violation, beri pesan kesalahan yang sesuai
                 DB::rollBack();
-                ToastrHelper::errorMessage("Tidak dapat menghapus brand karena masih ada data yang terkait dengan brand ini.");
+                ToastrHelper::errorMessage("Cannot delete brand because there are still users associated with this brand.");
                 return redirect()->back();
             } else {
                 // Kesalahan lain, beri pesan kesalahan umum
                 DB::rollBack();
-                ToastrHelper::errorMessage("Terjadi kesalahan saat menghapus brand. Silakan coba lagi.");
+                ToastrHelper::errorMessage("An error occurred while deleting the brand. Please try again.");
                 return redirect()->back();
             }
         }
