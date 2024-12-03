@@ -14,6 +14,7 @@ class UserDetail extends Model
         'name',
         'nik',
         'dob',
+        'gender',
         'address',
     ];
 }
