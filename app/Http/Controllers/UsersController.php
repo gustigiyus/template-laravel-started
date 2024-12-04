@@ -77,9 +77,10 @@ class UsersController extends Controller
             'roles' => Role::all(),
             'menus' => Menu::all(),
             'brands' => Brand::all(),
+            'brands_selected' => $users->first()->user_brand->pluck('id')->toArray(),
         ];
 
-        return view('utility.users.edit', $datas);
+        return view('pages.utility.users.edit', $datas);
     }
 
     public function update(Request $request)

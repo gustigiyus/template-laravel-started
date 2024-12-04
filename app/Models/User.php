@@ -60,6 +60,17 @@ class User extends Authenticatable
         return $this->hasOne(UserDetail::class);
     }
 
+    public function user_menu()
+    {
+        return $this->belongsToMany(Menu::class, 'user_menu', 'user_id', 'menu_id')
+            ->withPivot('can_add', 'can_edit', 'can_view');
+    }
+
+    public function user_brand()
+    {
+        return $this->belongsToMany(Brand::class, 'user_brand', 'user_id', 'brand_id');
+    }
+
     public function getUpdatedAtAttribute($value)
     {
         return DateHelper::formatTanggalIndonesia($value);
