@@ -83,135 +83,142 @@ class UsersController extends Controller
         return view('pages.utility.users.edit', $datas);
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        if ($request->password === null && $request->password_confirm === null) {
-            $validasi = Validator::make($request->all(), [
-                'name' => 'required',
-                'username' => 'required',
-                'roles' => function ($attribute, $value, $fail) {
-                    if ($value === null || $value === 'undefined') {
-                        $fail('The role field is required.');
+        $validasi = Validator::make($request->all(), [
+            'name' => 'required',
+            'username' => 'required|unique:users,username,' . $id,
+            'roles' => function ($attribute, $value, $fail) {
+                if ($value === null || $value === 'undefined') {
+                    $fail('The role field is required.');
+                }
+            },
+            'nik' => 'required',
+            'dob' => 'required',
+            'email' => 'required',
+            'gender' => 'required',
+            'address' => 'nullable',
+            'brand_lists' => 'required',
+            'menu_lists' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    $menuLists = json_decode($value, true);
+                    if (
+                        !is_array($menuLists) ||
+                        empty($menuLists['add']) && empty($menuLists['edit']) && empty($menuLists['view'])
+                    ) {
+                        $fail('The menu lists field must have at least one menu selected.');
                     }
                 },
-            ], [
-                'name.required' => 'Name is required.',
-                'username.required' => 'Username is required.',
-                'roles.required' => 'Role is required.',
-            ]);
-        } else {
-            $validasi = Validator::make($request->all(), [
-                'name' => 'required',
-                'username' => 'required',
+            ],
+        ], [
+            'name.required' => 'Name is required.',
+            'username.required' => 'Username is required.',
+            'roles.required' => 'Role is required.',
+            'nik.required' => 'Nik is required.',
+            'dob.required' => 'Dob is required.',
+            'email.required' => 'Email is required.',
+            'gender.required' => 'Gender is required.',
+            'brand_lists.required' => 'Brand is required.',
+            'menu_lists.required' => 'Menu is required.',
+        ]);
+
+        // Tambahkan validasi password jika ada input
+        if ($request->filled('password')) {
+            $passwordValidation = Validator::make($request->all(), [
                 'password' => 'required|min:6',
                 'password_confirm' => 'required|same:password',
-                'roles' => function ($attribute, $value, $fail) {
-                    if ($value === null || $value === 'undefined') {
-                        $fail('The role field is required.');
-                    }
-                },
             ], [
-                'name.required' => 'Name is required.',
-                'username.required' => 'Username is required.',
                 'password.required' => 'Password is required.',
                 'password.min' => 'The minimum password allowed is 6 characters.',
                 'password_confirm.required' => 'Password confirmation is required.',
                 'password_confirm.same' => 'Password confirmation is not the same as password.',
-                'roles.required' => 'Role is required.',
             ]);
+
+            if ($passwordValidation->fails()) {
+                return response()->json([
+                    'errors' => $passwordValidation->errors(),
+                    'messages' => "Password validation failed!"
+                ], 400);
+            }
         }
 
+        // Jika validasi lainnya gagal
         if ($validasi->fails()) {
             return response()->json([
                 'errors' => $validasi->errors(),
                 'messages' => "Data is not valid!"
             ], 400);
-        } else {
-            if ($request->password === null && $request->password_confirm === null) {
-                $dataRegister = [
-                    'username' => $request->input('username'),
-                    'email' => $request->input('email'),
-                    'role_id' => $request->input('roles'),
-                ];
-                User::where('id', $request->id)->update($dataRegister);
-            } else {
-                $dataRegister = [
-                    'username' => $request->input('username'),
-                    'password' => Hash::make($request->input('password')),
-                    'email' => $request->input('email'),
-                    'role_id' => $request->input('roles'),
-                ];
-                User::where('id', $request->id)->update($dataRegister);
-            }
-
-            $dataDetailRegister = [
-                'name' => $request->input('name'),
-                'nik' => $request->input('nik'),
-                'dob' => $request->input('dob'),
-                'address' => $request->input('address'),
-            ];
-            UserDetail::where('user_id', $request->id)->update($dataDetailRegister);
-
-            //? Menu List check
-            $menu_lists = $request->input('menu_lists');
-            $dt_menuList = explode(",", $menu_lists);
-
-            if ($menu_lists) {
-                $listMenuExists = DB::table('user_menu')->where('user_id', $request->id)->exists();
-                $data = [];
-                if ($listMenuExists) {
-                    DB::table('user_menu')->where('user_id', $request->id)->delete();
-
-                    foreach ($dt_menuList as $dm) {
-                        $data[] = ['user_id' => $request->id, 'menu_id' => intval($dm)];
-                    }
-
-                    DB::table('user_menu')->insert($data);
-                } else {
-                    foreach ($dt_menuList as $dm) {
-                        $data[] = ['user_id' => $request->id, 'menu_id' => intval($dm)];
-                    }
-
-                    DB::table('user_menu')->insert($data);
-                }
-            } else {
-                $listMenuExists = DB::table('user_menu')->where('user_id', $request->id)->exists();
-                if ($listMenuExists) {
-                    DB::table('user_menu')->where('user_id', $request->id)->delete();
-                }
-            }
-
-            //? Brand List check
-            $brand_lists = $request->input('brand_lists');
-            $dt_brandList = explode(",", $brand_lists);
-
-            if ($brand_lists) {
-                $listBrandExists = DB::table('user_brand')->where('user_id', $request->id)->exists();
-                $data = [];
-                if ($listBrandExists) {
-                    DB::table('user_brand')->where('user_id', $request->id)->delete();
-
-                    foreach ($dt_brandList as $dm) {
-                        $data[] = ['user_id' => $request->id, 'brand_id' => intval($dm)];
-                    }
-
-                    DB::table('user_brand')->insert($data);
-                } else {
-                    foreach ($dt_brandList as $dm) {
-                        $data[] = ['user_id' => $request->id, 'brand_id' => intval($dm)];
-                    }
-
-                    DB::table('user_brand')->insert($data);
-                }
-            } else {
-                $listMenuExists = DB::table('user_brand')->where('user_id', $request->id)->exists();
-                if ($listMenuExists) {
-                    DB::table('user_brand')->where('user_id', $request->id)->delete();
-                }
-            }
-
-            return response()->json(['success' => 'Successfully updated user'], 200);
         }
+
+        $user = User::with('user_menu', 'user_brand')->findOrFail($id);
+
+        // Update data utama
+        $user->username = $request->input('username');
+        $user->email = $request->input('email');
+        $user->role_id = $request->input('roles');
+
+        // Update password jika diisi
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->input('password'));
+        }
+        $user->save();
+
+        // Update user detail
+        $dob = $request->input('dob');
+        $dob_format = Carbon::createFromFormat('m/d/Y', $dob)->format('Y-m-d');
+
+        $user->user_detail->update([
+            'name' => $request->input('name'),
+            'gender' => $request->input('gender'),
+            'nik' => $request->input('nik'),
+            'dob' => $dob_format,
+            'address' => $request->input('address'),
+        ]);
+
+        // **Update user_menu**
+        $menuData = $request->input('menu_lists');
+        if ($menuData) {
+            $menus = json_decode($menuData, true);
+            if ($menus) {
+                // Hapus data sebelumnya
+                $user->user_menu()->detach();
+
+                // Siapkan data baru
+                $menuIds = collect($menus['add'])
+                    ->merge($menus['edit'])
+                    ->merge($menus['view'])
+                    ->unique()
+                    ->values();
+
+                $userMenus = $menuIds->mapWithKeys(function ($menuId) use ($menus) {
+                    return [
+                        $menuId => [
+                            'can_add' => in_array($menuId, $menus['add']),
+                            'can_edit' => in_array($menuId, $menus['edit']),
+                            'can_view' => in_array($menuId, $menus['view']),
+                        ],
+                    ];
+                });
+
+                // Tambahkan data baru
+                $user->user_menu()->attach($userMenus);
+            }
+        }
+
+        // **Update user_brand**
+        $brandLists = $request->input('brand_lists');
+        if ($brandLists) {
+            $brandIds = explode(',', $brandLists);
+
+            // Hapus data sebelumnya
+            $user->user_brand()->detach();
+
+            // Tambahkan data baru
+            $user->user_brand()->attach($brandIds);
+        }
+
+        return response()->json(['success' => 'User updated successfully'], 200);
     }
 
     public function store(Request $request)

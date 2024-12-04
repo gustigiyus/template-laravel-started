@@ -47,6 +47,6 @@ Route::get('utility/users/ajaxdataTables', [UsersController::class, 'ajaxdataTab
 Route::get('utility/users', [UsersController::class, 'index'])->name('userIndex')->middleware('checkRole:1');
 Route::get('utility/users/create', [UsersController::class, 'create'])->name('userCreate')->middleware('checkRole:1');
 Route::get('utility/users/edit/{id}', [UsersController::class, 'edit'])->name('userEdit')->middleware('checkRole:1');
-Route::post('utility/users/update', [UsersController::class, 'update'])->name('userUpdate')->middleware('checkRole:1');
+Route::post('utility/users/update/{id}', [UsersController::class, 'update'])->name('userUpdate')->middleware('checkRole:1');
 Route::post('utility/users/store', [UsersController::class, 'store'])->name('userStore')->middleware('checkRole:1');
 Route::post('utility/users/delete', [UsersController::class, 'destroy'])->name('userDelete')->middleware('checkRole:1');

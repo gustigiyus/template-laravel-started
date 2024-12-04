@@ -23,6 +23,13 @@
                             </h3>
                         </div>
                         <div class="p-6">
+                            <div class="w-full sm:col-span-3" hidden>
+                                <x-input-label for="ids" class="label-alert-ids" :value="__('ID User')" />
+                                <x-text-input id="ids" class="block w-full input-alert-ids" type="text"
+                                    name="ids" placeholder="Type id user" required autofocus autocomplete="off"
+                                    value="{{ $usr->id }}" />
+                                <x-input-error-v2 class="msg-alert-ids"></x-input-error-v2>
+                            </div>
                             <div class="flex flex-col xl:flex-row lg:flex-row md:flex-row mb-4 gap-5">
                                 <div class="w-full sm:col-span-3">
                                     <x-input-label for="username" class="label-alert-username" :value="__('Username')" />
@@ -119,7 +126,7 @@
                                     <x-input-label for="email" class="label-alert-email" :value="__('Email Address')" />
                                     <x-text-input id="email" class="block w-full input-alert-email"
                                         type="email" name="email" placeholder="Type email address" required
-                                        autofocus autocomplete="off" value="{{ $usr->user_detail->email }}" />
+                                        autofocus autocomplete="off" value="{{ $usr->email }}" />
                                     <x-input-error-v2 class="msg-alert-email"></x-input-error-v2>
                                 </div>
                                 <div class="w-full sm:col-span-3">
@@ -270,6 +277,7 @@
                 function save() {
                     const formData = new FormData()
 
+                    let usrId = $('input[name="ids"]').val()
                     let username = $('input[name="username"]').val()
                     let name = $('input[name="name"]').val()
                     let password = $('input[name="password"]').val()
@@ -328,7 +336,7 @@
 
                     $.ajax({
                         type: "POST",
-                        url: "{{ route('userStore') }}",
+                        url: "{{ route('userUpdate', ['id' => 'ID']) }}".replace('ID', usrId),
                         data: formData,
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
