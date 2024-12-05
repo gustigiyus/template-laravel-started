@@ -124,9 +124,6 @@
                                 </select>
                                 <x-input-error-v2 class="msg-alert-gender"></x-input-error-v2>
                             </div>
-
-
-
                         </div>
                         <div class="w-full sm:col-span-3">
                             <x-input-label for="address" class="label-alert-address" :value="__('Address Home')" />

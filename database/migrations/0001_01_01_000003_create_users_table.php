@@ -37,7 +37,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->nullable(false);
             $table->string('name')->nullable(false);
             $table->string('nik')->nullable();
-            $table->string('gender')->nullable();
+            $table->enum('gender', ['Male', 'Female'])->default('Male')->nullable(false);
             $table->date('dob')->nullable();
             $table->text('address')->nullable();
             $table->timestamps();

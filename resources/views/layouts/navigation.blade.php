@@ -3,9 +3,10 @@
         <div class="flex items-center justify-between">
             <div class="flex items-center justify-start rtl:justify-end">
                 <a href="{{ route('dashboard') }}" class="flex ms-2 md:me-24">
-                    <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 me-3" alt="FlowBite Logo" />
+                    <img src="{{ asset('storage/logo/' . config('app.logo', 'default-logo.png')) }}" class="h-8 me-3"
+                        alt="Logo App">
                     <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
-                        HRM APP
+                        {{ config('app.name', 'NAME APP') }}
                     </span>
                 </a>
             </div>
@@ -66,9 +67,10 @@
     aria-label="Sidebar">
     <div class="mt-3 mb-3 px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
         <a href="{{ route('dashboard') }}" class="flex ms-1 md:me-24">
-            <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 me-3" alt="FlowBite Logo" />
+            <img src="{{ asset('storage/logo/' . config('app.logo', 'default-logo.png')) }}" class="h-8 me-3"
+                alt="Logo App">
             <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
-                NAME APP
+                {{ config('app.name', 'NAME APP') }}
             </span>
         </a>
     </div>
@@ -92,7 +94,7 @@
                 <button type="button"
                     class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ request()->is('utility*') ? 'bg-gray-100' : '' }}"
                     aria-controls="menu-utility" data-collapse-toggle="menu-utility"
-                    aria-expanded={{ request()->is('utility*') ? 'true' : 'false' }}>
+                    aria-expanded="{{ request()->is('utility*') ? 'true' : 'false' }}">
                     <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                         fill="currentColor" viewBox="0 0 24 24">
@@ -140,14 +142,16 @@
             </li>
             <li>
                 <button type="button"
-                    class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                    aria-controls="menu-setting" data-collapse-toggle="menu-setting">
+                    class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ request()->is('setting*') ? 'bg-gray-100' : '' }}"
+                    aria-controls="menu-setting" data-collapse-toggle="menu-setting"
+                    aria-expanded="{{ request()->is('setting*') ? 'true' : 'false' }}">
                     <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                        fill="currentColor" viewBox="0 0 24 24">
-                        <path fill-rule="evenodd"
-                            d="M18 5.05h1a2 2 0 0 1 2 2v2H3v-2a2 2 0 0 1 2-2h1v-1a1 1 0 1 1 2 0v1h3v-1a1 1 0 1 1 2 0v1h3v-1a1 1 0 1 1 2 0v1Zm-15 6v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-8H3ZM11 18a1 1 0 1 0 2 0v-1h1a1 1 0 1 0 0-2h-1v-1a1 1 0 1 0-2 0v1h-1a1 1 0 1 0 0 2h1v1Z"
-                            clip-rule="evenodd" />
+                        fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 13v-2a1 1 0 0 0-1-1h-.757l-.707-1.707.535-.536a1 1 0 0 0 0-1.414l-1.414-1.414a1 1 0 0 0-1.414 0l-.536.535L14 4.757V4a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v.757l-1.707.707-.536-.535a1 1 0 0 0-1.414 0L4.929 6.343a1 1 0 0 0 0 1.414l.536.536L4.757 10H4a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h.757l.707 1.707-.535.536a1 1 0 0 0 0 1.414l1.414 1.414a1 1 0 0 0 1.414 0l.536-.535 1.707.707V20a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-.757l1.707-.708.536.536a1 1 0 0 0 1.414 0l1.414-1.414a1 1 0 0 0 0-1.414l-.535-.536.707-1.707H20a1 1 0 0 0 1-1Z" />
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
                     </svg>
                     <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Setting</span>
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -156,16 +160,11 @@
                             d="m1 1 4 4 4-4" />
                     </svg>
                 </button>
-                <ul id="menu-setting" class="py-2 space-y-2 hidden">
+                <ul id="menu-setting" class="py-2 space-y-2 {{ request()->is('setting*') ? '' : 'hidden' }}">
                     <li>
-                        <a href="{{ route('rolesIndex') }}"
-                            class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                            Access Users
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('brandIndex') }}"
-                            class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                        <a href="{{ route('settingAppIndex') }}"
+                            class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700
+                            {{ Route::is('settingAppIndex') ? 'link-active' : 'link-not-active' }}">
                             Application
                         </a>
                     </li>

@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
@@ -50,3 +51,11 @@ Route::get('utility/users/edit/{id}', [UsersController::class, 'edit'])->name('u
 Route::post('utility/users/update/{id}', [UsersController::class, 'update'])->name('userUpdate')->middleware('checkRole:1');
 Route::post('utility/users/store', [UsersController::class, 'store'])->name('userStore')->middleware('checkRole:1');
 Route::post('utility/users/delete', [UsersController::class, 'destroy'])->name('userDelete')->middleware('checkRole:1');
+
+
+//? Settings
+//* App
+Route::get('setting/app/ajaxdataTables', [SettingController::class, 'ajaxdataTables'])->name('settingAppList')->middleware('checkRole:1');
+Route::get('setting/app', [SettingController::class, 'index'])->name('settingAppIndex')->middleware('checkRole:1');
+Route::get('setting/app/edit/{id}', [SettingController::class, 'edit'])->name('settingAppEdit')->middleware('checkRole:1');
+Route::post('setting/app/update/{id}', [SettingController::class, 'update'])->name('settingAppUpdate')->middleware('checkRole:1');

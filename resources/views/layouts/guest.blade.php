@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'HRM APP') }}</title>
+    <title>{{ config('app.name', 'NAME APP') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -20,9 +20,9 @@
     <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <div>
             <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-                <img class="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
-                    alt="logo">
-                NAME APP
+                <img src="{{ asset('storage/logo/' . config('app.logo', 'default-logo.png')) }}" class="h-8 me-3"
+                    alt="Logo App">
+                {{ config('app.name', 'NAME APP') }}
             </a>
         </div>
 

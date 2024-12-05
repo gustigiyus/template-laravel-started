@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Role;
+use App\Models\SettingApp;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -108,21 +109,48 @@ class DatabaseSeeder extends Seeder
         DB::table('user_details')->insert([
             'user_id' => $user1->id,
             'name' => 'Gusti Giustianto',
+            'nik' => 'UEB8342',
+            'gender' => 'Male',
         ]);
 
         DB::table('user_details')->insert([
             'user_id' => $user2->id,
             'name' => 'Yuni Rahayu',
+            'nik' => 'URBGS84',
+            'gender' => 'Female',
         ]);
 
         DB::table('user_details')->insert([
             'user_id' => $user3->id,
             'name' => 'Ida Eliyanti',
+            'nik' => 'NMQOPD8',
+            'gender' => 'Female',
         ]);
 
         DB::table('user_details')->insert([
             'user_id' => $user4->id,
             'name' => 'Bagus Indra',
+            'nik' => 'PQJFV84',
+            'gender' => 'Male',
+        ]);
+
+
+        //? BRANDS
+        DB::table('brands')->insert([
+            'brand_name' => 'Kadaka',
+            'brand_desc' => 'Kadaka is the best brand',
+        ]);
+
+        DB::table('brands')->insert([
+            'brand_name' => 'Jogger',
+            'brand_desc' => 'Jogger is the best brand',
+        ]);
+
+
+        //? APP SETTING
+        DB::table('app_settings')->insert([
+            'name_app' => 'App Name',
+            'desc_app' => 'Apllication Description',
         ]);
     }
 }
