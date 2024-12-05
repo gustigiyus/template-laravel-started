@@ -138,6 +138,23 @@
                 // Set The Modal Menu
                 const $modal2 = document.getElementById('modal-delete');
 
+                const options2 = {
+                    placement: 'bottom-right',
+                    backdrop: 'static',
+                    backdropClasses: 'bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40',
+                    closable: true,
+                    onShow: () => {
+                        setTimeout(() => {
+                            $modal2.classList.add('scale-100', 'opacity-100', 'translate-y-0');
+                            $modal2.classList.remove('scale-0', 'opacity-0', 'translate-y-4');
+                        }, 50);
+                    },
+                    onHide: () => {
+                        $modal2.classList.add('scale-0', 'opacity-0', 'translate-y-4');
+                        $modal2.classList.remove('scale-100', 'opacity-100', 'translate-y-0');
+                    }
+                };
+
                 const instanceOptions2 = {
                     id: 'modal-delete',
                     override: true

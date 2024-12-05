@@ -351,6 +351,7 @@ class UsersController extends Controller
         try {
             UserDetail::where('user_id', $request->id)->delete();
             DB::table('user_menu')->where('user_id', $request->id)->delete();
+            DB::table('user_brand')->where('user_id', $request->id)->delete();
             User::destroy($request->id);
 
             DB::commit();

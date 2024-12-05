@@ -42,3 +42,11 @@
 .message-success {
   @apply text-green-600 dark:text-green-500;
 }
+
+.link-active {
+  @apply text-green-500 font-semibold;
+}
+
+.link-not-active {
+  @apply text-gray-900;
+}
