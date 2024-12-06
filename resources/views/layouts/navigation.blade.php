@@ -90,56 +90,60 @@
                     <span class="ms-3">{{ __('Dashboard') }}</span>
                 </a>
             </li>
-            <li>
-                <button type="button"
-                    class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ request()->is('utility*') ? 'bg-gray-100' : '' }}"
-                    aria-controls="menu-utility" data-collapse-toggle="menu-utility"
-                    aria-expanded="{{ request()->is('utility*') ? 'true' : 'false' }}">
-                    <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                        fill="currentColor" viewBox="0 0 24 24">
-                        <path fill-rule="evenodd"
-                            d="M18 5.05h1a2 2 0 0 1 2 2v2H3v-2a2 2 0 0 1 2-2h1v-1a1 1 0 1 1 2 0v1h3v-1a1 1 0 1 1 2 0v1h3v-1a1 1 0 1 1 2 0v1Zm-15 6v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-8H3ZM11 18a1 1 0 1 0 2 0v-1h1a1 1 0 1 0 0-2h-1v-1a1 1 0 1 0-2 0v1h-1a1 1 0 1 0 0 2h1v1Z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Utility</span>
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 10 6">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m1 1 4 4 4-4" />
-                    </svg>
-                </button>
-                <ul id="menu-utility" class="py-2 space-y-2 {{ request()->is('utility*') ? '' : 'hidden' }}">
-                    <li>
-                        <a href="{{ route('rolesIndex') }}"
-                            class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700
+
+            @if (Auth::user()->role_id === 1)
+                <li>
+                    <button type="button"
+                        class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ request()->is('utility*') ? 'bg-gray-100' : '' }}"
+                        aria-controls="menu-utility" data-collapse-toggle="menu-utility"
+                        aria-expanded="{{ request()->is('utility*') ? 'true' : 'false' }}">
+                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd"
+                                d="M18 5.05h1a2 2 0 0 1 2 2v2H3v-2a2 2 0 0 1 2-2h1v-1a1 1 0 1 1 2 0v1h3v-1a1 1 0 1 1 2 0v1h3v-1a1 1 0 1 1 2 0v1Zm-15 6v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-8H3ZM11 18a1 1 0 1 0 2 0v-1h1a1 1 0 1 0 0-2h-1v-1a1 1 0 1 0-2 0v1h-1a1 1 0 1 0 0 2h1v1Z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Utility</span>
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 4 4 4-4" />
+                        </svg>
+                    </button>
+                    <ul id="menu-utility" class="py-2 space-y-2 {{ request()->is('utility*') ? '' : 'hidden' }}">
+                        <li>
+                            <a href="{{ route('rolesIndex') }}"
+                                class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700
                             {{ Route::is('rolesIndex') ? 'link-active' : 'link-not-active' }}">
-                            Roles
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('brandIndex') }}"
-                            class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700
+                                Roles
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('brandIndex') }}"
+                                class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700
                             {{ Route::is('brandIndex') ? 'link-active' : 'link-not-active' }}">
-                            Brands
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('menuIndex') }}"
-                            class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700
+                                Brands
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('menuIndex') }}"
+                                class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700
                             {{ Route::is('menuIndex') ? 'link-active' : 'link-not-active' }}">
-                            Menus
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('userIndex') }}"
-                            class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700
+                                Menus
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('userIndex') }}"
+                                class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700
                             {{ Route::is('userIndex') ? 'link-active' : 'link-not-active' }}">
-                            Users
-                        </a>
-                    </li>
-                </ul>
-            </li>
+                                Users
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
+
             <li>
                 <button type="button"
                     class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ request()->is('setting*') ? 'bg-gray-100' : '' }}"
