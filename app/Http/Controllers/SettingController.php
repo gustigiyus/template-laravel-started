@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
+use App\Models\Menu;
 use App\Models\SettingApp;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -124,7 +127,6 @@ class SettingController extends Controller
         }
     }
 
-
     private function updateEnv($key, $value)
     {
         $path = base_path('.env');
@@ -142,5 +144,136 @@ class SettingController extends Controller
                 )
             );
         }
+    }
+
+    //? Access users
+
+    public function listAccessUser()
+    {
+        $data = User::with('user_detail', 'user_menu', 'user_brand')
+            ->whereNotIn('role_id', [1, 2])
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->addColumn('Action', function ($data) {
+                return view('pages.setting.access.button', ['data' => $data]);
+            })
+            ->make(true);
+    }
+
+    public function indexAccessUser()
+    {
+        $datas = [
+            'headerTitle' => 'Access User',
+            'pageTitle' => 'Access User',
+        ];
+
+        return view('pages.setting.access.index', $datas);
+    }
+
+    public function editAccessUser($userId)
+    {
+        $users = User::with('user_detail', 'user_menu', 'user_brand')
+            ->where(function ($query) use ($userId) {
+                $query->whereHas('user_detail', function ($subQuery) use ($userId) {
+                    $subQuery->where('user_id', $userId);
+                })
+                    ->orWhereHas('user_menu', function ($subQuery) use ($userId) {
+                        $subQuery->where('user_id', $userId);
+                    })
+                    ->orWhereHas('user_brand', function ($subQuery) use ($userId) {
+                        $subQuery->where('user_id', $userId);
+                    });
+            })
+            ->get();
+
+        $datas = [
+            'headerTitle' => 'Users',
+            'pageTitle' => 'Edit User',
+            'users' => $users,
+            'menus' => Menu::all(),
+            'brands' => Brand::all(),
+            'brands_selected' => $users->first()->user_brand->pluck('id')->toArray(),
+        ];
+
+        return view('pages.setting.access.edit', $datas);
+    }
+
+    public function updateAccessUser(Request $request, $id)
+    {
+        $validasi = Validator::make($request->all(), [
+            'brand_lists' => 'required',
+            'menu_lists' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    $menuLists = json_decode($value, true);
+                    if (
+                        !is_array($menuLists) ||
+                        empty($menuLists['add']) && empty($menuLists['edit']) && empty($menuLists['view'])
+                    ) {
+                        $fail('The menu lists field must have at least one menu selected.');
+                    }
+                },
+            ],
+        ], [
+            'brand_lists.required' => 'Brand is required.',
+            'menu_lists.required' => 'Menu is required.',
+        ]);
+
+        // Jika validasi lainnya gagal
+        if ($validasi->fails()) {
+            return response()->json([
+                'errors' => $validasi->errors(),
+                'messages' => "Data is not valid!"
+            ], 400);
+        }
+
+        $user = User::with('user_menu', 'user_brand')->findOrFail($id);
+
+        // **Update user_menu**
+        $menuData = $request->input('menu_lists');
+        if ($menuData) {
+            $menus = json_decode($menuData, true);
+            if ($menus) {
+                // Hapus data sebelumnya
+                $user->user_menu()->detach();
+
+                // Siapkan data baru
+                $menuIds = collect($menus['add'])
+                    ->merge($menus['edit'])
+                    ->merge($menus['view'])
+                    ->unique()
+                    ->values();
+
+                $userMenus = $menuIds->mapWithKeys(function ($menuId) use ($menus) {
+                    return [
+                        $menuId => [
+                            'can_add' => in_array($menuId, $menus['add']),
+                            'can_edit' => in_array($menuId, $menus['edit']),
+                            'can_view' => in_array($menuId, $menus['view']),
+                        ],
+                    ];
+                });
+
+                // Tambahkan data baru
+                $user->user_menu()->attach($userMenus);
+            }
+        }
+
+        // **Update user_brand**
+        $brandLists = $request->input('brand_lists');
+        if ($brandLists) {
+            $brandIds = explode(',', $brandLists);
+
+            // Hapus data sebelumnya
+            $user->user_brand()->detach();
+
+            // Tambahkan data baru
+            $user->user_brand()->attach($brandIds);
+        }
+
+        return response()->json(['success' => 'User access updated successfully'], 200);
     }
 }

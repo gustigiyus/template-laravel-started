@@ -59,3 +59,9 @@ Route::get('setting/app/ajaxdataTables', [SettingController::class, 'ajaxdataTab
 Route::get('setting/app', [SettingController::class, 'index'])->name('settingAppIndex')->middleware('checkRole:1');
 Route::get('setting/app/edit/{id}', [SettingController::class, 'edit'])->name('settingAppEdit')->middleware('checkRole:1');
 Route::post('setting/app/update/{id}', [SettingController::class, 'update'])->name('settingAppUpdate')->middleware('checkRole:1');
+
+//* Access user menu & brands
+Route::get('setting/access-user/ajaxdataTables', [SettingController::class, 'listAccessUser'])->name('accessUserList')->middleware('checkRole:1');
+Route::get('setting/access-user', [SettingController::class, 'indexAccessUser'])->name('accessUserIndex')->middleware('checkRole:1');
+Route::get('setting/access-user/edit/{id}', [SettingController::class, 'editAccessUser'])->name('accessUserEdit')->middleware('checkRole:1');
+Route::post('setting/access-user/update/{id}', [SettingController::class, 'updateAccessUser'])->name('accessUserUpdate')->middleware('checkRole:1');

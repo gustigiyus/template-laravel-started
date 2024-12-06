@@ -165,7 +165,14 @@
                         <a href="{{ route('settingAppIndex') }}"
                             class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700
                             {{ Route::is('settingAppIndex') ? 'link-active' : 'link-not-active' }}">
-                            Application
+                            Configure App
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('accessUserIndex') }}"
+                            class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700
+                            {{ Route::is('accessUserIndex') ? 'link-active' : 'link-not-active' }}">
+                            Access Users
                         </a>
                     </li>
                 </ul>
