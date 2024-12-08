@@ -71,26 +71,33 @@
                     }, {
                         data: 'user_detail.name',
                         name: 'user_detail.name',
-                        defaultContent: '-'
+                        orderable: false,
+                        className: 'align-top',
                     }, {
                         data: 'user_detail.nik',
                         name: 'user_detail.nik',
-                        defaultContent: '-'
+                        orderable: false,
+                        className: 'align-top',
                     }, {
                         data: 'user_detail.dob',
                         name: 'user_detail.dob',
-                        defaultContent: '-'
+                        orderable: false,
+                        className: 'align-top',
                     }, {
                         data: 'roles.role_name',
-                        name: 'roles.role_name'
+                        name: 'roles.role_name',
+                        orderable: false,
+                        className: 'align-top',
                     }, {
                         data: 'user_detail.address',
                         name: 'user_detail.address',
-                        defaultContent: '-'
+                        orderable: false,
+                        className: 'align-top',
                     }, {
                         data: 'updated_at',
                         name: 'updated_at',
-                        searchable: false
+                        orderable: false,
+                        className: 'align-top',
                     }, {
                         data: 'Action',
                         name: 'Action',

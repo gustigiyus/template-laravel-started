@@ -364,7 +364,6 @@
                             let msg = response.responseJSON.messages
 
                             alertError.show();
-                            console.log(msg)
 
                             if (res.username) {
                                 $('.msg-alert-username').text(res.username).addClass(

@@ -6,14 +6,17 @@ use App\Models\Brand;
 use App\Models\Menu;
 use App\Models\SettingApp;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
 class SettingController extends Controller
 {
+    //? App Setting
     public function ajaxdataTables()
     {
         $data = SettingApp::orderBy('updated_at', 'desc')->get();
@@ -146,8 +149,8 @@ class SettingController extends Controller
         }
     }
 
-    //? Access users
 
+    //? Access Users Menu and Brand
     public function listAccessUser()
     {
         $data = User::with('user_detail', 'user_menu', 'user_brand')
@@ -275,5 +278,128 @@ class SettingController extends Controller
         }
 
         return response()->json(['success' => 'User access updated successfully'], 200);
+    }
+
+
+    //? Profile
+    public function editProfile($userId)
+    {
+        $users = User::with('user_detail')
+            ->where(function ($query) use ($userId) {
+                $query->whereHas('user_detail', function ($subQuery) use ($userId) {
+                    $subQuery->where('user_id', $userId);
+                });
+            })
+            ->get();
+
+        $datas = [
+            'headerTitle' => 'Profile',
+            'pageTitle' => 'Edit Profile',
+            'users' => $users,
+        ];
+
+        return view('pages.setting.profile.edit', $datas);
+    }
+
+    public function updateProfile(Request $request, $id)
+    {
+        $validasi = Validator::make($request->all(), [
+            'name' => 'required',
+            'username' => 'required|unique:users,username,' . $id,
+            'roles' => function ($attribute, $value, $fail) {
+                if ($value === null || $value === 'undefined') {
+                    $fail('The role field is required.');
+                }
+            },
+            'nik' => 'required',
+            'dob' => 'required',
+            'email' => 'required',
+            'gender' => 'required',
+            'address' => 'nullable',
+            'profile_photo_path' => 'nullable|image|mimes:jpg,jpeg,png|max:1024',
+        ], [
+            'name.required' => 'Name is required.',
+            'username.required' => 'Username is required.',
+            'roles.required' => 'Role is required.',
+            'nik.required' => 'Nik is required.',
+            'dob.required' => 'Dob is required.',
+            'email.required' => 'Email is required.',
+            'gender.required' => 'Gender is required.',
+            'profile_photo_path.image' => 'File must be an image.',
+            'profile_photo_path.mimes' => 'Image must be of type: jpg, png, jpeg.',
+            'profile_photo_path.max' => 'Image size must not exceed 1MB.',
+        ]);
+
+        if ($request->filled('password')) {
+            $passwordValidation = Validator::make($request->all(), [
+                'password' => 'required|min:6',
+                'password_confirm' => 'required|same:password',
+            ], [
+                'password.required' => 'Password is required.',
+                'password.min' => 'The minimum password allowed is 6 characters.',
+                'password_confirm.required' => 'Password confirmation is required.',
+                'password_confirm.same' => 'Password confirmation is not the same as password.',
+            ]);
+
+            if ($passwordValidation->fails()) {
+                return response()->json([
+                    'errors' => $passwordValidation->errors(),
+                    'messages' => "Password validation failed!"
+                ], 400);
+            }
+        }
+
+        if ($validasi->fails()) {
+            return response()->json([
+                'errors' => $validasi->errors(),
+                'messages' => "Data is not valid!"
+            ], 400);
+        }
+
+        $user = User::findOrFail($id);
+
+        // Update data utama
+        $user->username = $request->input('username');
+        $user->email = $request->input('email');
+
+        // Update password jika diisi
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->input('password'));
+        }
+
+        if ($request->hasFile('profile_photo_path')) {
+            // Hapus logo lama jika ada
+            if ($user->profile_photo_path) {
+                $oldImagePath = storage_path('app/public/user-profile/' . $user->profile_photo_path);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
+            }
+
+            // Simpan logo baru
+            $file = $request->file('profile_photo_path');
+            $extension = $file->getClientOriginalExtension();
+
+            $cleanFileName = preg_replace('/[^a-zA-Z0-9_-]/', '_', $request->input('username'));
+            $filename = $cleanFileName . '.' . $extension;
+            $file->storeAs('user-profile', $filename, 'public');
+
+            $user->profile_photo_path = $filename;
+        }
+        $user->save();
+
+        // Update user detail
+        $dob = $request->input('dob');
+        $dob_format = Carbon::createFromFormat('m/d/Y', $dob)->format('Y-m-d');
+
+        $user->user_detail->update([
+            'name' => $request->input('name'),
+            'gender' => $request->input('gender'),
+            'nik' => $request->input('nik'),
+            'dob' => $dob_format,
+            'address' => $request->input('address'),
+        ]);
+
+        return response()->json(['success' => 'Profile updated successfully'], 200);
     }
 }

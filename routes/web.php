@@ -70,3 +70,7 @@ Route::get('setting/access-user/ajaxdataTables', [SettingController::class, 'lis
 Route::get('setting/access-user', [SettingController::class, 'indexAccessUser'])->name('accessUserIndex')->middleware('checkRole:1,2');
 Route::get('setting/access-user/edit/{id}', [SettingController::class, 'editAccessUser'])->name('accessUserEdit')->middleware('checkRole:1,2');
 Route::post('setting/access-user/update/{id}', [SettingController::class, 'updateAccessUser'])->name('accessUserUpdate')->middleware('checkRole:1,2');
+
+//* User profile
+Route::get('setting/profile/edit/{id}', [SettingController::class, 'editProfile'])->name('profileEdit')->middleware('checkRole:666');
+Route::post('setting/profile/update/{id}', [SettingController::class, 'updateProfile'])->name('profileUpdate')->middleware('checkRole:666');
